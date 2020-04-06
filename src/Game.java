@@ -13,15 +13,20 @@ public class Game implements Actions {
     private int score = 0;
 
     @Override
-    public void flipTwo(int[] indices) {
-        if (deck.get(indices[0]).equals(deck.get(indices[1]))
-                && (cardStates[indices[0]] != 2 || cardStates[indices[1]] != 2)) {
+    public Boolean flipTwo(int[] indices) {
+        if (cardStates[indices[0]] == 2 || cardStates[indices[1]] == 2) {
+            return false;
+        }
+
+        if (deck.get(indices[0]).equals(deck.get(indices[1]))) {
             cardStates[indices[0]] = 2;
             cardStates[indices[1]] = 2;
             score += 2;
+            return true;
         } else {
             cardStates[indices[0]] = 1;
             cardStates[indices[1]] = 1;
+            return true;
         }
     }
 
@@ -66,10 +71,18 @@ public class Game implements Actions {
             int[] numbers = { Integer.parseInt(split[0]) - 1, Integer.parseInt(split[1]) - 1 };
 
             // Keerame kaks kaarti ümber ja renderdame 2 sekundiks
-            flipTwo(numbers);
+            Boolean status = flipTwo(numbers);
+
+            if (!status) {
+                System.out.print("\033[H\033[2J");
+                System.out.flush();
+                System.out.println("vali numbritega kaarte!");
+                continue;
+            }
+
             System.out.println(renderCards());
 
-            if (score == deck.size() / 2) {
+            if (score == deck.size()) {
                 System.out.println("võit!");
                 running = false;
             }
