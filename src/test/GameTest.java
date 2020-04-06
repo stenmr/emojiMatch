@@ -6,6 +6,9 @@ public class GameTest {
 
     @Test
     public void test() {
-        assertEquals(true, false);
+
+        Deck deck = new Deck(new String[] {"S", "T"}, 4);
+
+        assertEquals("Deck size is 4: ", deck.size(), 4);
     }
 }

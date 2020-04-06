@@ -12,4 +12,9 @@
 			kind="lib"
 			path="lib/junit-4.13.jar"
 			exported="true" />
+					<classpathentry
+			kind="lib"
+			path="lib/hamcrest-2.2.jar"
+			exported="true" />
+
 </classpath>
