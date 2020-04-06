@@ -12,7 +12,7 @@ public class Deck {
     public Deck(String[] faces, int cards) {
         ArrayList<String> facesList = new ArrayList<String>(Arrays.asList(faces));
 
-        if (cards > faces.length) {
+        if (cards > faces.length * 2) {
             System.out.println("Amount of faces must be equal to or above the amount of cards");
             return;
         } else if (cards % 2 != 0) {
