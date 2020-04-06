@@ -7,7 +7,5 @@ public interface Actions {
 
     public Deck initializeDeck(String[] faces, int cards);
 
-    public Boolean[] initializeFlip(Deck deck);
-
     public void start();
 }
