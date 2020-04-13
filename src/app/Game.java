@@ -4,7 +4,7 @@ import java.util.Scanner;
 /**
  * Game
  */
-public class Game implements Actions {
+public class Game {
     private String[] placeholders = new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" };
     private Deck deck;
     // 0 on placeholder, 1 on kaardi nägu hetkeks, 2 on kaardi nägu aga lahendatud
@@ -12,7 +12,6 @@ public class Game implements Actions {
     public Boolean running = false;
     private int score = 0;
 
-    @Override
     public Boolean flipTwo(int[] indices) {
         if (cardStates[indices[0]] == 2 || cardStates[indices[1]] == 2) {
             return false;
@@ -38,7 +37,6 @@ public class Game implements Actions {
         }
     }
 
-    @Override
     public Deck initializeDeck(String[] faces, int cards) {
         Deck deck = new Deck(faces, cards);
         this.deck = deck;
@@ -52,7 +50,6 @@ public class Game implements Actions {
         this.cardStates = states;
     }
 
-    @Override
     public void start() {
         deck.shuffleDeck();
         running = true;
@@ -63,8 +60,9 @@ public class Game implements Actions {
             String move = input.nextLine();
 
             // Q lõpetab mängu
-            if (move == "q" || move == "Q") {
+            if (move.toLowerCase().equals("q")) {
                 running = false;
+                break;
             }
 
             String[] split = move.split(" ");
@@ -100,6 +98,10 @@ public class Game implements Actions {
         }
 
         input.close();
+    }
+
+    private void gameLoop(int[] indices) {
+        
     }
 
     private String renderCards() {
