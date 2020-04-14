@@ -41,6 +41,7 @@ public class Game {
         Deck deck = new Deck(faces, cards);
         this.deck = deck;
         initializeCardStates();
+        deck.shuffleDeck();
         return deck;
     }
 
@@ -51,7 +52,6 @@ public class Game {
     }
 
     public void start() {
-        deck.shuffleDeck();
         running = true;
         Scanner input = new Scanner(System.in);
         System.out.println("sisesta kaks tühikuga eraldatud arvu.\nleia klappivad kaardid.\n'q' lõpetab mängu.");
@@ -66,45 +66,45 @@ public class Game {
             }
 
             String[] split = move.split(" ");
-            int[] numbers = { Integer.parseInt(split[0]) - 1, Integer.parseInt(split[1]) - 1 };
+            int[] indices = { Integer.parseInt(split[0]) - 1, Integer.parseInt(split[1]) - 1 };
 
-            // Keerame kaks kaarti ümber ja renderdame 2 sekundiks
-            Boolean status = flipTwo(numbers);
-
-            if (!status) {
-                System.out.print("\033[H\033[2J");
-                System.out.flush();
-                System.out.println("vali numbritega kaarte!");
-                continue;
-            }
-
-            System.out.println(renderCards());
-
-            if (score == deck.size()) {
-                System.out.println("võit!");
-                running = false;
-            }
-
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException ex) {
-                Thread.currentThread().interrupt();
-            }
-
-            resetMismatchedCards();
-
-            System.out.print("\033[H\033[2J");
-            System.out.flush();
+            gameLoop(indices);
         }
 
         input.close();
     }
 
-    private void gameLoop(int[] indices) {
-        
+    public void gameLoop(int[] indices) {
+        // Keerame kaks kaarti ümber ja renderdame 2 sekundiks
+        Boolean status = flipTwo(indices);
+
+        if (!status) {
+            System.out.print("\033[H\033[2J");
+            System.out.flush();
+            System.out.println("vali numbritega kaarte!");
+            return;
+        }
+
+        System.out.println(renderCards());
+
+        if (score == deck.size()) {
+            System.out.println("võit!");
+            running = false;
+        }
+
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        }
+
+        resetMismatchedCards();
+
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
     }
 
-    private String renderCards() {
+    public String renderCards() {
 
         StringBuilder output = new StringBuilder();
 

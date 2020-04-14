@@ -1,42 +1,10 @@
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.io.PrintStream;
-
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 public class GameTest {
-    // https://stackoverflow.com/a/50721277
-    private final InputStream systemIn = System.in;
-    private final PrintStream systemOut = System.out;
-
-    private ByteArrayInputStream testIn;
-    private ByteArrayOutputStream testOut;
-
-    @Before
-    public void setUpOutput() {
-        testOut = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(testOut));
-    }
-
-    private void provideInput(String data) {
-        testIn = new ByteArrayInputStream(data.getBytes());
-        System.setIn(testIn);
-    }
-
-    private String getOutput() {
-        return testOut.toString();
-    }
-
-    @After
-    public void restoreSystemInputOutput() {
-        System.setIn(systemIn);
-        System.setOut(systemOut);
-    }
 
     @Test
     public void deckSize() {
@@ -45,6 +13,7 @@ public class GameTest {
         assertEquals("Deck size is correct", deck.size(), 4);
     }
 
+    // Ajuvaba test
     @Test
     public void deckIndexing() {
         Deck deck = new Deck(new String[] { "Q" }, 2);
@@ -53,13 +22,18 @@ public class GameTest {
     }
 
     @Test
-    public void deckDisplayS() {
-        final String exitString = "q";
-
+    public void deckDisplayL() {
         Game game = new Game();
         game.initializeDeck(new String[] { "S", "P", "K", "Q", "U" }, 10);
-        game.start();
-        provideInput(exitString);
-        assertEquals("Deck display matches expected", "", getOutput());
+        String testOutput = "/====\\  /====\\  /====\\  /====\\  /====\\  \n| 1  |  | 2  |  | 3  |  | 4  |  | 5  |  \n\\====/  \\====/  \\====/  \\====/  \\====/  \n\n/====\\  /====\\  /====\\  /====\\  /====\\  \n| 6  |  | 7  |  | 8  |  | 9  |  | 10  |  \n\\====/  \\====/  \\====/  \\====/  \\====/  \n"; 
+        assertEquals("Deck display matches expected", testOutput.trim(), game.renderCards().trim());
+    }
+
+    @Test
+    public void deckDisplayS() {
+        Game game = new Game();
+        game.initializeDeck(new String[] { "S", "P", "K", "Q", "U" }, 4);
+        String testOutput = "/====\\  /====\\  \n| 1  |  | 2  |  \n\\====/  \\====/  \n\n/====\\  /====\\  \n| 3  |  | 4  |  \n\\====/  \\====/  \n"; 
+        assertEquals("Deck display matches expected", testOutput.trim(), game.renderCards().trim());
     }
 }
